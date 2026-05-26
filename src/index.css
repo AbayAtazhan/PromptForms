@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  /* Deep Blue Tech / Dark Mode Clinical Color Tokens */
+  --color-bg-darker: #030712;
+  --color-bg-dark: #080f1e;
+  --color-bg-card: #0f172a;
+  --color-bg-card-hover: #1e293b;
+  --color-tech-cyan: #06b6d4;
+  --color-tech-blue: #3b82f6;
+  --color-tech-purple: #8b5cf6;
+  --color-tech-emerald: #10b981;
+  --color-tech-rose: #f43f5e;
+  --color-tech-amber: #f59e0b;
+  --color-border-clinical: #1e293b;
+  --color-border-glow: #334155;
+  --color-text-primary: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+
+  /* Custom Glow Shadows */
+  --shadow-cyan-glow: 0 0 15px rgba(6, 182, 212, 0.15);
+  --shadow-purple-glow: 0 0 15px rgba(139, 92, 246, 0.15);
+  --shadow-cyan-glow-intense: 0 0 25px rgba(6, 182, 212, 0.3);
+  --shadow-clinical-glow: 0 0 20px rgba(59, 130, 246, 0.08);
+
+  /* Fonts */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Custom Base & Utilities Scrollbars */
+@layer base {
+  body {
+    background-color: var(--color-bg-darker);
+    color: var(--color-text-primary);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbars for a sleek tech feel */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #030712;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+  }
+}
+
+/* Premium micro-animations & utilities */
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.1);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.25);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s infinite ease-in-out;
+}
+
+@keyframes text-shine {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.text-gradient-shine {
+  background: linear-gradient(to right, #3b82f6, #06b6d4, #8b5cf6, #3b82f6);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: text-shine 6s linear infinite;
+}
+
+/* Glassmorphism utility card styling */
+.glass-panel {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-panel-accent {
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(6, 182, 212, 0.15);
+}
