@@ -17,7 +17,6 @@ export const useGemini = () => {
     setError(null);
     setOutput('');
 
-    // Retrieve the API key from local storage or parameter
     const apiKey = overrideApiKey || localStorage.getItem('promptforms_gemini_api_key');
     if (!apiKey) {
       setError('API Key is missing. Click the "Set Gemini API Key" button in the header to enter your Google AI Studio key.');
@@ -27,8 +26,6 @@ export const useGemini = () => {
 
     try {
       const genAI = new GoogleGenerativeAI(apiKey);
-      
-      // Gemini 2.5 Flash is super fast and perfect for this form execution
       const model = genAI.getGenerativeModel({
         model: 'gemini-2.5-flash',
         ...(systemInstruction ? { systemInstruction } : {})

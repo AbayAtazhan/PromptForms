@@ -46,7 +46,6 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
     <div className="glass-panel rounded-2xl border border-border-clinical p-6 shadow-xl space-y-5 relative overflow-hidden flex flex-col h-full min-h-[400px] animate-fade-in">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-tech-blue via-tech-cyan to-tech-purple" />
 
-      {/* Top Operations Header */}
       <div className="flex items-center justify-between border-b border-border-clinical pb-4 shrink-0">
         <div className="flex items-center gap-2">
           <div className="relative">
@@ -80,7 +79,6 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
         )}
       </div>
 
-      {/* Content Viewer Area */}
       <div className="grow overflow-y-auto pr-1 select-text space-y-4 min-h-[300px]">
         {isLoading && (
           <div className="flex flex-col items-center justify-center h-full space-y-3 py-16 animate-pulse">
@@ -120,7 +118,6 @@ export const OutputDisplay: React.FC<OutputDisplayProps> = ({
   );
 };
 
-// Stylish Copyable CodeBlock Component
 const CodeBlock: React.FC<{ code: string; language: string }> = ({ code, language }) => {
   const [copied, setCopied] = useState(false);
 
@@ -161,11 +158,9 @@ const CodeBlock: React.FC<{ code: string; language: string }> = ({ code, languag
   );
 };
 
-// Lightweight custom markdown parser converting markdown content into rich React elements
 const parseMarkdown = (text: string): React.ReactNode => {
   if (!text) return null;
 
-  // Split by code blocks: ```
   const blocks = text.split(/(```[\s\S]*?```)/g);
 
   return blocks.map((block, index) => {
@@ -182,7 +177,6 @@ const parseMarkdown = (text: string): React.ReactNode => {
         {block.split('\n').map((line, lineIndex) => {
           const trimmed = line.trim();
 
-          // Headers
           if (trimmed.startsWith('# ')) {
             return (
               <h1 key={lineIndex} className="text-xl font-bold text-white pt-4 pb-1 border-b border-border-clinical/50 leading-tight">
@@ -212,7 +206,6 @@ const parseMarkdown = (text: string): React.ReactNode => {
             );
           }
 
-          // Bulleted Lists
           if (trimmed.startsWith('* ') || trimmed.startsWith('- ')) {
             return (
               <ul key={lineIndex} className="list-disc pl-5 space-y-1 my-0.5">
@@ -223,7 +216,6 @@ const parseMarkdown = (text: string): React.ReactNode => {
             );
           }
 
-          // Numbered Lists
           if (/^\d+\.\s/.test(trimmed)) {
             const content = trimmed.replace(/^\d+\.\s/, '');
             const number = trimmed.match(/^(\d+)\.\s/)?.[1] || '1';
@@ -236,12 +228,10 @@ const parseMarkdown = (text: string): React.ReactNode => {
             );
           }
 
-          // Separator line
           if (trimmed === '---') {
             return <hr key={lineIndex} className="border-border-clinical/60 my-4" />;
           }
 
-          // Paragraph spacer
           if (trimmed === '') {
             return <div key={lineIndex} className="h-1.5" />;
           }
@@ -257,21 +247,17 @@ const parseMarkdown = (text: string): React.ReactNode => {
   });
 };
 
-// Inline parsing helper for bold (**), italics (*), and inline code (`)
 const parseInline = (text: string): React.ReactNode[] => {
   let elements: React.ReactNode[] = [text];
 
-  // 1. Process Bold: **text**
   elements = splitAndMap(elements, /\*\*(.*?)\*\*/g, (match, key) => (
     <strong key={key} className="font-bold text-white">{match}</strong>
   ));
 
-  // 2. Process Italics: *text* (excluding bold matchings)
   elements = splitAndMap(elements, /\*([^*]+)\*/g, (match, key) => (
     <em key={key} className="italic text-text-primary">{match}</em>
   ));
 
-  // 3. Process Inline Code: `code`
   elements = splitAndMap(elements, /`([^`]+)`/g, (match, key) => (
     <code key={key} className="px-1.5 py-0.5 rounded bg-bg-darker border border-border-clinical text-tech-cyan text-[11px] font-mono">
       {match}
@@ -281,7 +267,6 @@ const parseInline = (text: string): React.ReactNode[] => {
   return elements;
 };
 
-// Inline parsing helper engine to recursively process strings inside split fragments
 const splitAndMap = (
   nodes: React.ReactNode[],
   regex: RegExp,

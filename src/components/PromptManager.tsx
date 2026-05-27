@@ -16,28 +16,23 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
   onDeleteTemplate,
 }) => {
   const [editingId, setEditingId] = useState<string | null>(null);
-  
-  // Form State
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [systemInstruction, setSystemInstruction] = useState('');
   const [parsedVariables, setParsedVariables] = useState<string[]>([]);
   const [formError, setFormError] = useState<string | null>(null);
 
-  // Real-time parsing of double curly braces variables e.g., {{topic}}
   useEffect(() => {
     const regex = /\{\{([^}]+)\}\}/g;
     const matches: string[] = [];
     let match;
     
-    // Reset state if system instruction is empty
     if (!systemInstruction.trim()) {
       setParsedVariables([]);
       return;
     }
 
     while ((match = regex.exec(systemInstruction)) !== null) {
-      // Trim spaces inside the brackets to standard clean variable names
       const varName = match[1].trim();
       if (varName && !matches.includes(varName)) {
         matches.push(varName);
@@ -47,7 +42,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
     setParsedVariables(matches);
   }, [systemInstruction]);
 
-  // Load existing values into form when entering Edit mode
   const handleStartEdit = (template: PromptTemplate) => {
     setEditingId(template.id);
     setTitle(template.title);
@@ -91,7 +85,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
       onAddTemplate(templateData);
     }
 
-    // Reset Form
     setTitle('');
     setDescription('');
     setSystemInstruction('');
@@ -100,7 +93,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-7xl mx-auto animate-fade-in p-2">
-      {/* Left Form: Create / Edit Template */}
       <div className="lg:col-span-5 space-y-6">
         <div className="glass-panel rounded-2xl border border-border-clinical p-6 shadow-xl relative overflow-hidden">
           <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-tech-blue via-tech-cyan to-tech-purple" />
@@ -111,7 +103,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
           </h2>
 
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Title */}
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Template Title *
@@ -125,7 +116,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
               />
             </div>
 
-            {/* Description */}
             <div className="space-y-1.5">
               <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Short Description
@@ -139,7 +129,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
               />
             </div>
 
-            {/* System Instruction / Prompt Body */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label className="block text-xs font-semibold text-text-secondary uppercase tracking-wider">
@@ -161,7 +150,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
               />
             </div>
 
-            {/* Parsed Variables Badges */}
             <div className="space-y-2">
               <span className="block text-xs font-semibold text-text-secondary uppercase tracking-wider">
                 Detected Variables ({parsedVariables.length})
@@ -185,7 +173,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
               )}
             </div>
 
-            {/* Form Error Message */}
             {formError && (
               <div className="flex items-center gap-2 text-xs text-tech-rose bg-tech-rose/5 border border-tech-rose/20 p-3 rounded-lg">
                 <AlertCircle className="w-4 h-4 shrink-0" />
@@ -193,7 +180,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
               </div>
             )}
 
-            {/* Action Buttons */}
             <div className="flex gap-3 pt-2">
               {editingId && (
                 <button
@@ -217,7 +203,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
         </div>
       </div>
 
-      {/* Right Grid: Templates List */}
       <div className="lg:col-span-7 space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold text-white flex items-center gap-2.5">
@@ -236,7 +221,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
                 key={template.id}
                 className="group relative flex flex-col justify-between p-5 bg-bg-card border border-border-clinical rounded-2xl shadow-lg hover:border-tech-blue/40 transition-all duration-300 hover:-translate-y-0.5"
               >
-                {/* Overlay Accent border on hover */}
                 <div className="absolute inset-0 border border-transparent rounded-2xl group-hover:border-tech-cyan/20 pointer-events-none transition-colors" />
 
                 <div className="space-y-3">
@@ -250,7 +234,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
                     {template.description || 'No description provided.'}
                   </p>
 
-                  {/* Template Variable Counts */}
                   <div className="flex flex-wrap gap-1.5 pt-2">
                     {template.variables.length > 0 ? (
                       template.variables.slice(0, 3).map((v) => (
@@ -269,7 +252,6 @@ export const PromptManager: React.FC<PromptManagerProps> = ({
                   </div>
                 </div>
 
-                {/* Operations Bar */}
                 <div className="flex items-center justify-between border-t border-border-clinical/50 pt-4 mt-5">
                   <span className="text-[10px] text-text-muted font-mono">
                     {new Date(template.createdAt).toLocaleDateString(undefined, {

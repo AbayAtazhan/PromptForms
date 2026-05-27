@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Key, Eye, EyeOff, Check, AlertTriangle, ExternalLink, RefreshCw } from 'lucide-react';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
@@ -48,7 +48,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
 
     try {
       const genAI = new GoogleGenerativeAI(apiKey.trim());
-      // Use the smallest prompt possible to verify key correctness
       const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
       const result = await model.generateContent({
         contents: [{ role: 'user', parts: [{ text: 'Respond with the word "OK".' }] }]
@@ -72,10 +71,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
       <div className="relative w-full max-w-lg overflow-hidden glass-panel-accent rounded-2xl shadow-2xl border border-tech-cyan/20 animate-scale-up">
-        {/* Glowing Header Accent */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-tech-cyan via-tech-blue to-tech-purple" />
 
-        {/* Modal Title Bar */}
         <div className="flex items-center justify-between p-6 pb-4 border-b border-border-clinical">
           <div className="flex items-center gap-3">
             <div className="p-2 rounded-lg bg-tech-blue/10 border border-tech-blue/20">
@@ -91,7 +88,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
           </button>
         </div>
 
-        {/* Modal Body */}
         <div className="p-6 space-y-6">
           <p className="text-sm text-text-secondary leading-relaxed">
             PromptForms communicates directly with Google Gemini 2.5 Flash using your browser. 
@@ -136,7 +132,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             </div>
           </div>
 
-          {/* Test Status Banner */}
           {testState === 'success' && (
             <div className="flex items-start gap-3 p-4 bg-tech-emerald/10 border border-tech-emerald/30 rounded-xl animate-fade-in">
               <Check className="w-5 h-5 text-tech-emerald mt-0.5 shrink-0" />
@@ -157,7 +152,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
             </div>
           )}
 
-          {/* Instructions Box */}
           <div className="p-4 bg-bg-dark border border-border-clinical rounded-xl space-y-2">
             <h4 className="text-xs font-semibold text-white uppercase tracking-wider">How to get a free API Key?</h4>
             <ol className="text-xs text-text-secondary list-decimal pl-4 space-y-1.5">
@@ -179,7 +173,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ isOpen, onClose, o
           </div>
         </div>
 
-        {/* Modal Footer */}
         <div className="flex items-center justify-between p-6 border-t border-border-clinical bg-bg-dark/50">
           <button
             type="button"

@@ -18,7 +18,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
   const [formValues, setFormValues] = useState<Record<string, string>>({});
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  // Initialize form fields when the template changes
   useEffect(() => {
     if (selectedTemplate) {
       const initialValues: Record<string, string> = {};
@@ -55,7 +54,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
   const substituteVariables = (text: string, values: Record<string, string>): string => {
     let result = text;
     Object.entries(values).forEach(([variable, value]) => {
-      // Create regex matching {{variable}} or {{ variable }} (handling whitespaces)
       const regex = new RegExp(`\\{\\{\\s*${variable}\\s*\\}\\}`, 'g');
       result = result.replace(regex, value.trim());
     });
@@ -65,7 +63,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate that all fields are filled
     const unfilledVariables = selectedTemplate.variables.filter(
       (v) => !formValues[v] || !formValues[v].trim()
     );
@@ -78,18 +75,14 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
 
     setValidationError(null);
 
-    // Substitute variable placeholders inside the system instruction
     const substitutedText = substituteVariables(selectedTemplate.systemInstruction, formValues);
 
-    // Run the streaming Gemini generation
-    // We send the substitutedText as the user prompt, with a concise AI agent instructions
     await onGenerate(
       substitutedText,
       "You are an expert AI prompt execution engine. Perform the user's detailed instructions exactly as formulated."
     );
   };
 
-  // Helper to check if field should be textarea (multi-line) or input (single-line)
   const isMultiLineField = (variableName: string): boolean => {
     const term = variableName.toLowerCase();
     const multilineKeywords = [
@@ -108,7 +101,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
     return multilineKeywords.some((keyword) => term.includes(keyword));
   };
 
-  // Helper to format field name to clean readable label
   const formatLabel = (variableName: string): string => {
     return variableName
       .replace(/[_-]/g, ' ')
@@ -119,7 +111,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
     <div className="glass-panel rounded-2xl border border-border-clinical p-6 shadow-xl space-y-6 relative overflow-hidden animate-fade-in">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-tech-blue via-tech-cyan to-tech-purple" />
 
-      {/* Header Info */}
       <div className="space-y-1.5 border-b border-border-clinical pb-4">
         <div className="flex items-center justify-between">
           <span className="text-[10px] font-bold text-tech-cyan uppercase tracking-widest bg-tech-cyan/10 border border-tech-cyan/20 px-2 py-0.5 rounded">
@@ -139,7 +130,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
         )}
       </div>
 
-      {/* Interactive Input Form */}
       <form onSubmit={handleFormSubmit} className="space-y-5">
         {selectedTemplate.variables.length > 0 ? (
           <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-1">
@@ -182,7 +172,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
           </div>
         )}
 
-        {/* Validation Errors */}
         {validationError && (
           <div className="flex items-center gap-2 text-xs text-tech-rose bg-tech-rose/5 border border-tech-rose/20 p-3 rounded-lg animate-shake">
             <AlertCircle className="w-4 h-4 shrink-0" />
@@ -190,7 +179,6 @@ export const DynamicFormRenderer: React.FC<DynamicFormRendererProps> = ({
           </div>
         )}
 
-        {/* Action Button */}
         <button
           type="submit"
           disabled={isLoading || isStreaming}

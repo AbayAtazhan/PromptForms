@@ -9,7 +9,6 @@ import type { PromptTemplate } from './types';
 import { Key, BookOpen } from 'lucide-react';
 import { WaitlistSection } from './components/WaitlistSection';
 
-// Initial high-fidelity template presets to seed LocalStorage on fresh start
 const PRESET_TEMPLATES: PromptTemplate[] = [
   {
     id: 'tpl-saas-copy',
@@ -47,21 +46,15 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<'playground' | 'templates' | 'waitlist'>('playground');
   const [templates, setTemplates] = useState<PromptTemplate[]>([]);
   const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
-  
-  // API settings
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [apiKeySaved, setApiKeySaved] = useState(false);
 
-  // Gemini stream hook integration
   const { output, isLoading, isStreaming, error, generateStream, clearOutput } = useGemini();
 
-  // Load templates & check API key status on launch
   useEffect(() => {
-    // 1. Check API Key
     const key = localStorage.getItem('promptforms_gemini_api_key');
     setApiKeySaved(!!key);
 
-    // 2. Load or Seed Templates
     const stored = localStorage.getItem('promptforms_templates');
     if (stored) {
       const parsed = JSON.parse(stored) as PromptTemplate[];
@@ -70,20 +63,17 @@ export default function App() {
         setSelectedTemplateId(parsed[0].id);
       }
     } else {
-      // Seed preset templates
       localStorage.setItem('promptforms_templates', JSON.stringify(PRESET_TEMPLATES));
       setTemplates(PRESET_TEMPLATES);
       setSelectedTemplateId(PRESET_TEMPLATES[0].id);
     }
   }, []);
 
-  // Sync templates to localStorage on changes
   const saveTemplates = (newTemplates: PromptTemplate[]) => {
     setTemplates(newTemplates);
     localStorage.setItem('promptforms_templates', JSON.stringify(newTemplates));
   };
 
-  // Listen to deep-links from Sidebar custom events
   useEffect(() => {
     const handleSelectTemplate = (e: Event) => {
       const id = (e as CustomEvent).detail;
@@ -101,7 +91,6 @@ export default function App() {
     setApiKeySaved(!!key);
   };
 
-  // CRUD Template Managers
   const handleAddTemplate = (newTplData: Omit<PromptTemplate, 'id' | 'createdAt'>) => {
     const newTpl: PromptTemplate = {
       ...newTplData,
@@ -135,7 +124,6 @@ export default function App() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden bg-bg-darker text-text-primary">
-      {/* Sidebar Navigation */}
       <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -144,9 +132,7 @@ export default function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
       />
 
-      {/* Main Core View Area */}
       <main className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* Unified Premium Header Topbar */}
         <header className="h-16 shrink-0 flex items-center justify-between px-8 border-b border-border-clinical bg-bg-dark/40 backdrop-blur-md z-10">
           <div className="flex items-center gap-2.5">
             <span className="w-2.5 h-2.5 rounded-full bg-tech-cyan animate-pulse shadow-cyan-glow" />
@@ -158,7 +144,6 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-4">
-            {/* Status Connection Indicator Box */}
             <button
               onClick={() => setIsSettingsOpen(true)}
               className={`flex items-center gap-2 px-3 py-1.5 rounded-xl border text-xs font-semibold transition-all duration-200 ${
@@ -174,13 +159,10 @@ export default function App() {
           </div>
         </header>
 
-        {/* Content Viewer body (scroll isolated) */}
         <div className="flex-1 overflow-y-auto p-8">
           {activeTab === 'playground' && (
             <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 max-w-7xl mx-auto h-full items-start">
-              {/* Template Selector & Variable Inputs Column */}
               <div className="xl:col-span-5 space-y-6">
-                {/* Quick Switch Dropdown */}
                 {templates.length > 0 && (
                   <div className="glass-panel border-border-clinical rounded-2xl p-4 flex flex-col gap-2 shadow-md">
                     <label className="text-[10px] font-bold text-text-secondary uppercase tracking-widest flex items-center gap-1.5">
@@ -211,7 +193,6 @@ export default function App() {
                 />
               </div>
 
-              {/* Streaming Output Column */}
               <div className="xl:col-span-7 h-full">
                 <OutputDisplay
                   output={output}
@@ -236,7 +217,6 @@ export default function App() {
         </div>
       </main>
 
-      {/* Settings Modal */}
       <SettingsModal
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}

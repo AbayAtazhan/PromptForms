@@ -25,15 +25,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   return (
     <aside className="w-64 shrink-0 flex flex-col justify-between border-r border-border-clinical bg-bg-dark h-screen sticky top-0 p-6">
-      {/* Upper Section */}
       <div className="space-y-8">
-        {/* Glowing Brand Logo */}
         <div className="flex items-center gap-3">
           <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-tech-blue via-tech-cyan to-tech-purple p-[1px] shadow-cyan-glow">
             <div className="flex items-center justify-center w-full h-full bg-bg-darker rounded-xl">
               <Terminal className="w-5 h-5 text-tech-cyan" />
             </div>
-            {/* Pulsing indicator orb */}
             <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-tech-cyan animate-ping" />
             <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-tech-cyan" />
           </div>
@@ -45,7 +42,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Navigation Section */}
         <div className="space-y-1.5">
           <span className="block text-[10px] font-semibold text-text-muted uppercase tracking-widest px-3 mb-2">
             Main Dashboard
@@ -100,7 +96,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </button>
         </div>
 
-        {/* Templates Quick List (if any templates exist, show titles up to 3) */}
         {templates.length > 0 && (
           <div className="pt-4 border-t border-border-clinical/60">
             <span className="block text-[10px] font-semibold text-text-muted uppercase tracking-widest px-3 mb-2">
@@ -112,7 +107,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   key={template.id}
                   onClick={() => {
                     setActiveTab('playground');
-                    // Selection handling will be managed in parent component
                     const event = new CustomEvent('selectTemplate', { detail: template.id });
                     window.dispatchEvent(event);
                   }}
@@ -128,9 +122,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         )}
       </div>
 
-      {/* Bottom Section */}
       <div className="space-y-4">
-        {/* API Settings Quick Access */}
         <button
           onClick={onOpenSettings}
           className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium border border-border-clinical text-text-secondary hover:text-white hover:bg-bg-card transition-all ${
@@ -144,7 +136,6 @@ export const Sidebar: React.FC<SidebarProps> = ({
           }`} />
         </button>
 
-        {/* Footer Credit */}
         <div className="text-[10px] text-text-muted leading-relaxed px-1">
           <p>Open source license. Secure client-side execution.</p>
         </div>

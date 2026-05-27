@@ -44,15 +44,14 @@ export const WaitlistSection: React.FC = () => {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          // Сюда нужно вставить реальный токен от web3forms.com
-          access_key: "7adbcd28-27af-4b2a-a744-757b941a1f7d",
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
           subject: `🔥 New Lead for PromptForms Teams: ${email.trim()}`,
           from_name: "PromptForms App MVP",
           email: email.trim(),
           profile_role: getRoleLabel(role),
           company_name: businessName.trim() || 'Not Provided (Freelance)',
           allocated_seats: teamSize,
-          submitted_at: new Date().toLocaleString('ru-RU')
+          submitted_at: new Date().toISOString()
         })
       });
 
@@ -74,7 +73,7 @@ export const WaitlistSection: React.FC = () => {
         setEmail('');
         setBusinessName('');
       } else {
-        alert("Web3Forms API error. Please verify your Access Key inside the code.");
+        alert("Web3Forms API error. Please verify your VITE_WEB3FORMS_KEY in your local environment variables.");
       }
     } catch (error) {
       console.error("Failed to send waitlist data:", error);
@@ -86,7 +85,6 @@ export const WaitlistSection: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-12 animate-fade-in p-2">
-      {/* Visual Header Grid Showcase */}
       <div className="text-center space-y-4 max-w-3xl mx-auto">
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-tech-purple/10 border border-tech-purple/20 text-tech-purple animate-pulse-glow shadow-purple-glow">
           <Award className="w-3.5 h-3.5" /> Introducing PromptForms Teams
@@ -99,12 +97,9 @@ export const WaitlistSection: React.FC = () => {
         </p>
       </div>
 
-      {/* Main Core Showcase Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-        {/* Left Column: Premium Features list */}
         <div className="lg:col-span-7 space-y-6 flex flex-col justify-between">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Feature 1 */}
             <div className="p-5 bg-bg-card border border-border-clinical rounded-2xl space-y-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-tech-cyan/10 border border-tech-cyan/20 text-tech-cyan">
                 <Lock className="w-5 h-5" />
@@ -115,7 +110,6 @@ export const WaitlistSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Feature 2 */}
             <div className="p-5 bg-bg-card border border-border-clinical rounded-2xl space-y-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-tech-blue/10 border border-tech-blue/20 text-tech-blue">
                 <Users className="w-5 h-5" />
@@ -126,7 +120,6 @@ export const WaitlistSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Feature 3 */}
             <div className="p-5 bg-bg-card border border-border-clinical rounded-2xl space-y-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-tech-purple/10 border border-tech-purple/20 text-tech-purple">
                 <Key className="w-5 h-5" />
@@ -137,7 +130,6 @@ export const WaitlistSection: React.FC = () => {
               </p>
             </div>
 
-            {/* Feature 4 */}
             <div className="p-5 bg-bg-card border border-border-clinical rounded-2xl space-y-3">
               <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-tech-emerald/10 border border-tech-emerald/20 text-tech-emerald">
                 <BarChart3 className="w-5 h-5" />
@@ -149,7 +141,6 @@ export const WaitlistSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Social Proof Indicator */}
           <div className="p-5 bg-tech-blue/5 border border-tech-blue/15 rounded-2xl flex items-center gap-4">
             <Zap className="w-8 h-8 text-tech-cyan shrink-0 animate-pulse" />
             <div className="text-xs leading-relaxed text-text-secondary">
@@ -159,7 +150,6 @@ export const WaitlistSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Right Column: Waitlist Capture Box */}
         <div className="lg:col-span-5 flex items-stretch">
           {!submittedData ? (
             <div className="w-full glass-panel rounded-2xl border border-border-clinical p-6 md:p-8 flex flex-col justify-between relative overflow-hidden shadow-2xl">
@@ -175,7 +165,6 @@ export const WaitlistSection: React.FC = () => {
                 </p>
 
                 <form onSubmit={handleSubmit} className="space-y-4 pt-2">
-                  {/* Email Input */}
                   <div className="space-y-1.5">
                     <label className="block text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
                       Work Email *
@@ -194,7 +183,6 @@ export const WaitlistSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Role Dropdown */}
                   <div className="space-y-1.5">
                     <label className="block text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
                       Your Role *
@@ -211,7 +199,6 @@ export const WaitlistSection: React.FC = () => {
                     </select>
                   </div>
 
-                  {/* Company Name */}
                   <div className="space-y-1.5">
                     <label className="block text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
                       Business / Agency Name
@@ -226,7 +213,6 @@ export const WaitlistSection: React.FC = () => {
                     />
                   </div>
 
-                  {/* Team Size */}
                   <div className="space-y-1.5">
                     <label className="block text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
                       Expected Seats
@@ -249,7 +235,6 @@ export const WaitlistSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Submit Button */}
                   <button
                     type="submit"
                     disabled={isSubmitting || !email}
@@ -271,7 +256,6 @@ export const WaitlistSection: React.FC = () => {
               </div>
             </div>
           ) : (
-            /* Success Whitelisted Confirmation Dashboard Screen */
             <div className="w-full glass-panel-accent rounded-2xl border border-tech-purple/30 p-6 md:p-8 flex flex-col justify-between text-center relative overflow-hidden shadow-2xl animate-scale-up">
               <div className="absolute inset-0 bg-gradient-to-tr from-tech-purple/5 to-tech-cyan/5 pointer-events-none" />
 
@@ -287,7 +271,6 @@ export const WaitlistSection: React.FC = () => {
                   </p>
                 </div>
 
-                {/* Registered Account Details */}
                 <div className="bg-bg-dark/60 border border-border-clinical rounded-xl p-4 text-left space-y-2 max-w-sm mx-auto w-full">
                   <span className="block text-[9px] text-text-muted uppercase tracking-wider font-bold">Registration Data:</span>
                   <div className="grid grid-cols-3 gap-y-1.5 text-[11px] leading-relaxed">
